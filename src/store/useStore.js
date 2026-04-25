@@ -842,16 +842,13 @@ export const useStore = create(
             .maybeSingle();
           
           if (!fetchProfile && !profileError) {
-             // Profile missing. Automatically initialize it.
-             const { data: newProfile, error: insertError } = await supabase.from('profiles').upsert({
-                id: user.id,
-                email: user.email,
-                total_reading_time_ms: 0,
-                total_pages_read: 0
-             }, { onConflict: 'id' }).select().single();
-             
-             if (insertError) throw insertError;
-             profile = newProfile;
+             // ⚠️ CRITICAL: Profile missing during active session means the account was either manually purged 
+             // from the dashboard or deleted via the Danger Zone. Force sign-out to prevent invalid state.
+             console.warn('Profile missing for active session. Purging local state.');
+             await supabase.auth.signOut();
+             get().clearSession();
+             window.location.href = '/auth';
+             return;
           } else if (profileError) {
              throw profileError;
           } else {
@@ -1151,18 +1148,24 @@ export const useStore = create(
         if (!user) return false;
 
         try {
-          // 1. Delete profile and associated data (RLS/Cascade will handle most)
+          // 1. Delete profile and associated data 
+          // Our SQL Cascades (account_deletion_fix.sql) handle purging resonance data.
           const { error: profileError } = await supabase
             .from('profiles')
             .delete()
             .eq('id', user.id);
 
-          if (profileError) throw profileError;
+          if (profileError) {
+            console.error('Database deletion failed:', profileError);
+            throw profileError;
+          }
 
-          // 2. Clear local session
+          // 2. Clear local session & Official Auth Teardown
           get().clearSession();
+          await supabase.auth.signOut();
           
-          // 3. User must be redirected to auth/landing by the component calling this
+          // 3. HARD REFRESH: To clear any lingering memory/state
+          window.location.href = '/auth';
           return true;
         } catch (err) {
           console.error('Account deletion failed:', err);

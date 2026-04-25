@@ -248,6 +248,11 @@ const Profile = () => {
         return
      }
 
+     if (deletePhrase?.trim() !== "DELETE MY ACCOUNT") {
+        setDeleteError('Please type the exact phrase "DELETE MY ACCOUNT" to confirm.')
+        return
+     }
+
      setIsVerifying(true)
      setDeleteError('')
 
@@ -651,7 +656,7 @@ const Profile = () => {
                        <input 
                           type="text" 
                           value={deletePhrase}
-                          onChange={e => setDeletePhrase(e.target.value)}
+                          onChange={e => setDeletePhrase(e.target.value.toUpperCase())}
                           placeholder="DELETE MY ACCOUNT"
                           autoComplete="off"
                           className="w-full bg-red-50/30 border border-red-200/50 rounded-2xl py-3 px-4 text-sm outline-none focus:ring-1 focus:ring-red-500 uppercase font-black tracking-tight"
@@ -667,7 +672,7 @@ const Profile = () => {
                 <div className="flex flex-col gap-3">
                   <button
                     onClick={confirmDeletion}
-                    disabled={isVerifying || !deleteEmail || !deletePassword || deletePhrase !== "DELETE MY ACCOUNT"}
+                    disabled={isVerifying}
                     className="w-full py-4 bg-red-600 text-white font-bold rounded-2xl shadow-premium hover:bg-red-700 transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     {isVerifying ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <>Yes, Delete My Account</>}
