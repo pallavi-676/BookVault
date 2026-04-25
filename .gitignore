@@ -1,0 +1,26 @@
+# System/Build
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.supabase_mock_db
+.vscode/
+.idea/
+.gemini/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# SQL (Optional: hide repair scripts from production repo)
+# stats_repair.sql
+# master_repair.sql

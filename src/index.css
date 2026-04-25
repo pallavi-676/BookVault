@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Outfit', 'Manrope', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  
+  /* PREMIUM LIGHT THEME: Pastel Aristocracy */
+  --color-surface: #F8F4F2;        /* Background: Soft Bone */
+  --color-surface-raw: 248, 244, 242;
+  --color-surface-lowest: #F3EEE6;  /* Surface / Cards: Warm Alabaster */
+  --color-surface-low: #EFE6E1;     /* Sidebar / Panels: Misty Linen */
+  
+  --color-primary: #B57873;         /* Primary Accent: Muted Heritage Rose */
+  --color-primary-container: #B57873;
+  --color-secondary: #CFB4AB;       /* Secondary Accent: Soft Clay */
+  --color-tertiary: #D7CCAE;        /* Neutral Accent: Antique Parchment */
+  
+  --color-on-primary: #F8F4F2;
+  --color-on-surface: #4B3A36;      /* Text Primary: Bitter Chocolate */
+  --color-on-surface-variant: #7A6660; /* Text Secondary: Roasted Coffee */
+  --color-muted: #9B8A84;          /* Muted Text: Soft Taupe */
+  --color-outline-variant: #E6DAD5; /* Borders: Weathered Stone */
+
+  --shadow-premium: 0 10px 40px rgba(75, 58, 54, 0.05), 0 2px 8px rgba(75, 58, 54, 0.02);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  /* PREMIUM DARK THEME: Midnight Library */
+  --color-surface: #1A1614;         /* Background: Deep Espresso */
+  --color-surface-raw: 26, 22, 20;
+  --color-surface-lowest: #241E1B;  /* Surface / Cards: Rich Mocha */
+  --color-surface-low: #1E1917;     /* Sidebar: Dark Mahogany */
+
+  --color-primary: #A76D68;         /* Primary: Muted Plum Rose */
+  --color-primary-container: #A76D68;
+  --color-secondary: #8D746D;       /* Secondary: Muted Cocoa */
+  --color-tertiary: #6D6453;        /* Neutral: Aged Brass */
+
+  --color-on-primary: #1A1614;
+  --color-on-surface: #E6DAD5;      /* Text Primary: Warm Cream */
+  --color-on-surface-variant: #B4A59F; /* Text Secondary: Soft Latte */
+  --color-muted: #8A7B76;          /* Muted Text: Taupe Gray */
+  --color-outline-variant: #332B28; /* Borders: Charred Oak */
+
+  --shadow-premium: 0 20px 50px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Serif', serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Luxury Form Elements */
+input, select, textarea {
+  background-color: var(--color-surface-low);
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface);
+  border-radius: 12px;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(var(--color-primary-raw), 0.1);
+}
+
+button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 20px;
+  border: 2px solid var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Glassmorphism Refined */
+.glass {
+  background: rgba(var(--color-surface-raw), 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Utility Helpers */
+.bg-bookvault-surface { background-color: var(--color-surface); }
+.bg-bookvault-surface-low { background-color: var(--color-surface-low); }
+.bg-bookvault-surface-lowest { background-color: var(--color-surface-lowest); }
+.text-bookvault-primary { color: var(--color-primary); }
+.text-on-surface-variant { color: var(--color-on-surface-variant); }
+.text-bookvault-secondary { color: var(--color-secondary); }
+.border-outline-variant { border-color: var(--color-outline-variant); }
+
+.premium-card {
+  background-color: var(--color-surface-lowest);
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: var(--shadow-premium);
+  border-radius: 24px;
+}
+
+.shadow-premium {
+  box-shadow: var(--shadow-premium);
+}
+
+/* Global Overrides for Premium Theme */
+.bg-white { background-color: var(--color-surface-lowest) !important; }
+.dark .bg-zinc-900 { background-color: var(--color-surface-lowest) !important; }
+.dark .bg-zinc-950 { background-color: var(--color-surface) !important; }
+.dark .bg-zinc-800 { background-color: var(--color-surface-low) !important; }
+.dark .border-zinc-800 { border-color: var(--color-outline-variant) !important; }
