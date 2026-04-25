@@ -842,13 +842,20 @@ export const useStore = create(
             .maybeSingle();
           
           if (!fetchProfile && !profileError) {
-             // ⚠️ CRITICAL: Profile missing during active session means the account was either manually purged 
-             // from the dashboard or deleted via the Danger Zone. Force sign-out to prevent invalid state.
-             console.warn('Profile missing for active session. Purging local state.');
-             await supabase.auth.signOut();
-             get().clearSession();
-             window.location.href = '/auth';
-             return;
+             // Profile missing. Automatically initialize it for new signups.
+             const { data: newProfile, error: insertError } = await supabase.from('profiles').upsert({
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || '',
+                total_reading_time_ms: 0,
+                total_pages_read: 0
+             }, { onConflict: 'id' }).select().single();
+             
+             if (insertError) {
+                console.error('Failed to initialize profile:', insertError);
+                throw insertError;
+             }
+             profile = newProfile;
           } else if (profileError) {
              throw profileError;
           } else {
