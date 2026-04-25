@@ -1,16 +1,115 @@
-# React + Vite
+# BookVault 📚✨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BookVault is a modern reading and writing platform built for **authors and readers**.
 
-Currently, two official plugins are available:
+It transforms the reading experience by combining a personal digital library with a social discovery system where writers can publish stories, grow their audience, and connect directly with readers.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+https://book-vault-psi.vercel.app
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🌟 Features
+
+### 👤 Reader Features
+
+* Personal digital library
+* Upload and read PDF / EPUB / TXT books
+* Reading progress sync
+* Bookmarks, highlights, notes
+* Wishlist / Favorites
+* Search inside books
+* Light / Dark premium themes
+
+### ✍️ Author Features
+
+* Become an author profile
+* Create and publish stories
+* Chapter management system
+* Draft / Publish controls
+* Public author pages
+* Followers system
+* Reader engagement tools
+
+### 💬 Community Features
+
+* Follow authors
+* Comments & replies
+* Likes on stories / chapters
+* Messaging system
+* Notifications
+* Discovery page for trending stories & authors
+
+### 🎨 Premium UX
+
+* Fully responsive (mobile + desktop)
+* Smooth modern UI
+* Elegant dual theme system
+* Optimized performance
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* Tailwind CSS
+* Zustand
+
+### Backend
+
+* Supabase
+* Authentication
+* PostgreSQL Database
+* Storage
+* Realtime features
+
+---
+
+## 📱 Responsive Design
+
+BookVault is optimized for:
+
+* Mobile devices
+* Tablets
+* Desktop
+* Modern browsers
+
+---
+
+## 🔐 Security
+
+* Session isolation
+* Protected authentication flows
+* Environment variable secret management
+* Safe cloud persistence
+
+---
+
+## 🚧 Future Roadmap
+
+* AI reading assistant
+* Paid author subscriptions
+* Better recommendations
+* Analytics dashboard
+* Custom domains
+* Native mobile app
+
+---
+
+## 👩‍💻 Creator
+
+Built independently by Pallavi Sarovar.
+
+---
+
+## 💛 Feedback
+
+If you use BookVault, feedback is always welcome.
+
+---
