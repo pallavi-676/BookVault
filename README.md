@@ -189,8 +189,3 @@ Feedback from readers and writers helps shape the future of the platform.
 
 Try it, explore it, and be part of the journey.
 
----
-
-# ⭐ If You Like BookVault
-
-Support by sharing it with fellow readers and writers.
