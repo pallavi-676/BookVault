@@ -384,7 +384,6 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
                     onClick={() => {/* Note logic */}} 
                   />
                   <SelectionButton 
-                  <SelectionButton 
                     icon={<ClipboardCopy size={16} />} 
                     onClick={() => {
                       navigator.clipboard.writeText(mobileSelection.text);
