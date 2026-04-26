@@ -478,7 +478,7 @@ const Profile = () => {
             <h2 className="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Author Profile</h2>
 
             {/* Author Stats */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mb-8">
               <div className="bg-bookvault-surface-low rounded-xl p-4 text-center">
                 <BookOpen size={20} className="text-bookvault-primary mx-auto mb-1" />
                 <p className="text-2xl font-serif font-bold text-bookvault-primary">{userProfile?.storiesCount || 0}</p>
@@ -489,7 +489,7 @@ const Profile = () => {
                 <p className="text-2xl font-serif font-bold text-bookvault-primary">{userProfile?.followersCount || 0}</p>
                 <p className="text-[10px] text-on-surface-variant mt-0.5 font-medium uppercase tracking-wider">Followers</p>
               </div>
-              <div className="bg-bookvault-surface-low rounded-xl p-4 text-center">
+              <div className="bg-bookvault-surface-low rounded-xl p-4 text-center col-span-2 sm:col-span-1">
                 <CheckCircle size={20} className="text-bookvault-primary mx-auto mb-1" />
                 <p className="text-2xl font-serif font-bold text-bookvault-primary">{booksCompleted}</p>
                 <p className="text-[10px] text-on-surface-variant mt-0.5 font-medium uppercase tracking-wider">Read</p>
@@ -619,10 +619,10 @@ const Profile = () => {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="bg-white dark:bg-zinc-900 w-full max-w-md rounded-[40px] overflow-hidden shadow-2xl border border-red-500/20 p-10 text-center"
+                className="bg-white dark:bg-zinc-900 w-full max-w-md rounded-[32px] md:rounded-[40px] overflow-hidden shadow-2xl border border-red-500/20 p-6 md:p-10 text-center"
               >
-                <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <AlertCircle size={40} />
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
+                  <AlertCircle size={32} md:size={40} />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-bookvault-primary mb-4">Are you absolutely sure?</h3>
                 <p className="text-sm text-on-surface-variant/80 mb-8 leading-relaxed px-4">

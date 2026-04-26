@@ -98,8 +98,8 @@ const Messages = () => {
       <Navbar onUploadClick={() => {}} />
       <Sidebar activeCategory="messages" onCategoryChange={() => {}} />
 
-      <main className="pl-64 pt-20 h-screen overflow-hidden">
-        <div className="h-full flex">
+      <main className="lg:pl-64 pt-20 h-screen overflow-hidden">
+        <div className="h-full flex relative overflow-hidden">
           {/* Inbox Pane */}
           <section className={clsx(
             "w-full lg:w-[400px] border-r border-outline-variant/10 bg-white dark:bg-zinc-900/50 flex flex-col transition-all duration-300",
@@ -189,27 +189,27 @@ const Messages = () => {
                   className="h-full flex flex-col"
                 >
                   {/* Thread Header */}
-                  <header className="h-24 bg-white dark:bg-zinc-900 border-b border-outline-variant/10 px-8 flex items-center justify-between z-10 shadow-sm">
-                    <div className="flex items-center gap-4">
+                  <header className="h-20 md:h-24 bg-white dark:bg-zinc-900 border-b border-outline-variant/10 px-4 md:px-8 flex items-center justify-between z-10 shadow-sm flex-shrink-0">
+                    <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
                       {isMobileView && (
-                        <button onClick={() => setShowThreadOnMobile(false)} className="p-2 hover:bg-black/5 rounded-xl mr-2">
-                          <ChevronLeft size={24} />
+                        <button onClick={() => setShowThreadOnMobile(false)} className="p-2 hover:bg-black/5 rounded-xl">
+                          <ChevronLeft size={20} />
                         </button>
                       )}
-                      <div className="w-12 h-12 rounded-2xl bg-bookvault-surface-low overflow-hidden border border-outline-variant/10">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-bookvault-surface-low overflow-hidden border border-outline-variant/10 flex-shrink-0">
                         {activeThread.avatar_url ? (
                           <img src={activeThread.avatar_url} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-outline-variant opacity-20"><User size={20} /></div>
                         )}
                       </div>
-                      <div>
-                        <p className="font-serif font-bold text-bookvault-primary text-lg">{activeThread.full_name}</p>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant opacity-40">@{activeThread.username}</p>
+                      <div className="min-w-0">
+                        <p className="font-serif font-bold text-bookvault-primary text-base md:text-lg truncate">{activeThread.full_name}</p>
+                        <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-on-surface-variant opacity-40 truncate">@{activeThread.username}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                       <button className="p-3 hover:bg-black/5 rounded-2xl transition-colors opacity-40 hover:opacity-100">
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                       <button className="p-2 md:p-3 hover:bg-black/5 rounded-2xl transition-colors opacity-40 hover:opacity-100">
                           <MoreHorizontal size={20} />
                        </button>
                     </div>
@@ -259,9 +259,9 @@ const Messages = () => {
                     )}
                   </div>
 
-                  {/* Message Input */}
-                  <div className="p-8 pb-12 bg-white dark:bg-zinc-900 border-t border-outline-variant/10">
-                    <div className="max-w-4xl mx-auto relative group">
+                   {/* Message Input */}
+                  <div className="p-4 md:p-8 pb-32 md:pb-12 bg-white dark:bg-zinc-900 border-t border-outline-variant/10 flex-shrink-0">
+                    <div className="max-w-4xl mx-auto relative group flex items-end gap-2">
                       <textarea 
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
@@ -271,13 +271,13 @@ const Messages = () => {
                             handleSendMessage();
                           }
                         }}
-                        placeholder={`Message ${activeThread.full_name}...`}
-                        className="w-full bg-bookvault-surface-low border-2 border-transparent focus:border-bookvault-primary/20 rounded-[32px] p-6 pr-24 text-bookvault-primary outline-none transition-all resize-none min-h-[80px] max-h-40 leading-relaxed shadow-sm"
+                        placeholder={`Message ${activeThread.full_name.split(' ')[0]}...`}
+                        className="flex-1 bg-bookvault-surface-low border-2 border-transparent focus:border-bookvault-primary/20 rounded-[24px] md:rounded-[32px] p-4 md:p-6 text-bookvault-primary outline-none transition-all resize-none min-h-[52px] max-h-40 leading-relaxed shadow-sm text-sm"
                       />
                       <button 
                         onClick={handleSendMessage}
                         disabled={!inputText.trim()}
-                        className="absolute right-4 bottom-4 w-12 h-12 bg-bookvault-primary text-white rounded-2xl flex items-center justify-center shadow-premium hover:bg-bookvault-primary-container disabled:opacity-20 transition-all hover:scale-105 active:scale-95"
+                        className="w-12 h-12 md:w-14 md:h-14 bg-bookvault-primary text-white rounded-2xl flex items-center justify-center shadow-premium hover:bg-bookvault-primary-container disabled:opacity-20 transition-all hover:scale-105 active:scale-95 flex-shrink-0"
                       >
                         <Send size={20} />
                       </button>

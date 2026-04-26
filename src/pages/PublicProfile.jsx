@@ -320,50 +320,51 @@ const PublicProfileContent = () => {
                 </p>
              </div>
 
-             <div className="flex md:flex-col gap-3 w-full md:w-auto z-10">
-                {isOwner ? (
-                   <div className="flex flex-col gap-3 w-full min-w-[200px]">
-                      <button 
-                        onClick={() => navigate('/author')}
-                        className="px-8 py-4 bg-bookvault-primary text-white rounded-2xl font-bold shadow-premium hover:bg-bookvault-primary-container transition-all flex items-center justify-center gap-2 w-full"
-                      >
-                         <Feather size={20} /> Author Dashboard
-                      </button>
-                      <button 
-                        onClick={() => navigate('/profile')}
-                        className="px-8 py-4 bg-bookvault-surface-low text-bookvault-primary rounded-2xl font-bold hover:bg-black/5 transition-all flex items-center justify-center gap-2 w-full"
-                      >
-                        <Settings size={20} /> Account Settings
-                      </button>
-                   </div>
-                ) : (
-                   <>
-                      <button 
-                        onClick={handleFollow}
-                        className={`px-8 py-4 rounded-2xl font-bold shadow-premium transition-all flex items-center justify-center gap-2 min-w-[200px] ${
-                          isFollowing 
-                          ? 'bg-bookvault-surface-low text-bookvault-primary hover:bg-black/5' 
-                          : 'bg-bookvault-primary text-white hover:bg-bookvault-primary-container'
-                        }`}
-                      >
-                         {isFollowing ? (
-                           <>
-                              <CheckCircle size={20} className="text-bookvault-secondary" /> Following
-                           </>
-                         ) : (
-                           <>
-                              <Users size={20} /> Follow
-                           </>
-                         )}
-                      </button>
-                      <button 
-                         onClick={() => setIsMessageModalOpen(true)}
-                         className="px-8 py-4 bg-bookvault-surface-low text-bookvault-primary rounded-2xl font-bold hover:bg-black/5 transition-all flex items-center justify-center gap-2 min-w-[200px]"
-                      >
-                         <Send size={18} /> Message
-                      </button>
-                   </>
-                )}
+              <div className="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto z-10">
+                 {isOwner ? (
+                    <div className="flex flex-col gap-3 w-full min-w-0 md:min-w-[200px]">
+                       <button 
+                         onClick={() => navigate('/author')}
+                         className="px-6 md:px-8 py-3 md:py-4 bg-bookvault-primary text-white rounded-2xl font-bold shadow-premium hover:bg-bookvault-primary-container transition-all flex items-center justify-center gap-2 w-full text-sm md:text-base"
+                       >
+                          <Feather size={20} /> Author Dashboard
+                       </button>
+                       <button 
+                         onClick={() => navigate('/profile')}
+                         className="px-6 md:px-8 py-3 md:py-4 bg-bookvault-surface-low text-bookvault-primary rounded-2xl font-bold hover:bg-black/5 transition-all flex items-center justify-center gap-2 w-full text-sm md:text-base"
+                       >
+                         <Settings size={20} /> Account Settings
+                       </button>
+                    </div>
+                 ) : (
+                    <>
+                       <button 
+                         onClick={handleFollow}
+                         className={`px-6 md:px-8 py-3 md:py-4 rounded-2xl font-bold shadow-premium transition-all flex items-center justify-center gap-2 w-full md:min-w-[200px] text-sm md:text-base ${
+                           isFollowing 
+                           ? 'bg-bookvault-surface-low text-bookvault-primary hover:bg-black/5' 
+                           : 'bg-bookvault-primary text-white hover:bg-bookvault-primary-container'
+                         }`}
+                       >
+                          {isFollowing ? (
+                            <>
+                               <CheckCircle size={18} className="text-bookvault-secondary md:size-[20px]" /> Following
+                            </>
+                          ) : (
+                            <>
+                               <Users size={18} className="md:size-[20px]" /> Follow
+                            </>
+                          )}
+                       </button>
+                       <button 
+                          onClick={() => setIsMessageModalOpen(true)}
+                          className="px-6 md:px-8 py-3 md:py-4 bg-bookvault-surface-low text-bookvault-primary rounded-2xl font-bold hover:bg-black/5 transition-all flex items-center justify-center gap-2 w-full md:min-w-[200px] text-sm md:text-base"
+                       >
+                          <Send size={18} /> Message
+                       </button>
+                    </>
+                 )}
+              </div>
 
                 {/* Social Bar - Strictly null safe */}
                 {profile?.social_links && typeof profile.social_links === 'object' && Object.keys(profile.social_links).length > 0 && (

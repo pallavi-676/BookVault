@@ -131,32 +131,32 @@ const Landing = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bookvault-surface/80 to-bookvault-surface" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-bookvault-primary/5 text-bookvault-primary rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-8 border border-bookvault-primary/10">
+            <span className="inline-flex items-center gap-2 px-3 md:px-4 py-2 bg-bookvault-primary/5 text-bookvault-primary rounded-full text-[9px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.3em] mb-6 md:mb-8 border border-bookvault-primary/10">
               <Sparkles size={14} className="animate-pulse" /> Preserving the Sanctity of Literature
             </span>
-            <h1 className="text-5xl md:text-8xl font-serif font-bold text-bookvault-primary leading-[1.1] mb-8 tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif font-bold text-bookvault-primary leading-[1.1] mb-6 md:mb-8 tracking-tight">
               The Immersive Home <br className="hidden md:block" />
               for Your Library.
             </h1>
-            <p className="max-w-2xl mx-auto text-on-surface-variant text-lg md:text-xl leading-relaxed mb-12">
+            <p className="max-w-2xl mx-auto text-on-surface-variant text-base md:text-xl leading-relaxed mb-10 md:mb-12 px-4">
               BookVault is more than a reader. It’s a professional ecosystem where authors build legacies and readers find a sanctuary for the written word.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4">
               <button 
                 onClick={() => navigate('/auth')}
-                className="w-full sm:w-auto px-10 py-5 bg-bookvault-primary text-white rounded-2xl font-bold text-lg shadow-premium hover:bg-bookvault-primary-container transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
+                className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 bg-bookvault-primary text-white rounded-2xl font-bold text-base md:text-lg shadow-premium hover:bg-bookvault-primary-container transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
               >
                 Join the Community <ArrowRight size={20} />
               </button>
               <button 
                 onClick={() => navigate('/discover')}
-                className="w-full sm:w-auto px-10 py-5 bg-bookvault-surface-lowest text-bookvault-primary border-2 border-bookvault-primary/10 rounded-2xl font-bold text-lg hover:bg-bookvault-surface-low transition-all"
+                className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 bg-bookvault-surface-lowest text-bookvault-primary border-2 border-bookvault-primary/10 rounded-2xl font-bold text-base md:text-lg hover:bg-bookvault-surface-low transition-all"
               >
                 Explore Discover
               </button>
@@ -168,17 +168,16 @@ const Landing = () => {
             initial={{ opacity: 0, scale: 0.9, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1 }}
-            className="mt-20 md:mt-32 relative group"
+            className="mt-12 md:mt-32 relative group px-2"
           >
             <div className="absolute -inset-4 bg-gradient-to-r from-bookvault-primary/20 to-bookvault-secondary/20 rounded-[56px] blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
-            <div className="relative bg-bookvault-surface-lowest rounded-[48px] border border-outline-variant/10 shadow-2xl overflow-hidden aspect-[16/9] max-w-5xl mx-auto border-t-8 border-t-bookvault-primary/5">
-                {/* A placeholder for a beautiful screenshot of the dashboard */}
-                <div className="w-full h-full bg-bookvault-surface-low flex flex-col items-center justify-center p-20 text-center">
-                    <div className="w-24 h-24 bg-bookvault-primary/5 rounded-full flex items-center justify-center mb-6">
-                        <Star size={40} className="text-bookvault-primary opacity-20" />
+            <div className="relative bg-bookvault-surface-low rounded-[32px] md:rounded-[48px] border border-outline-variant/10 shadow-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9] max-w-5xl mx-auto">
+                <div className="w-full h-full bg-bookvault-surface-low flex flex-col items-center justify-center p-8 md:p-20 text-center">
+                    <div className="w-16 h-16 md:w-24 md:h-24 bg-bookvault-primary/5 rounded-full flex items-center justify-center mb-4 md:mb-6">
+                        <Star size={32} md:size={40} className="text-bookvault-primary opacity-20" />
                     </div>
-                   <h3 className="text-2xl font-serif font-bold text-bookvault-primary opacity-40">Visualizing Excellence</h3>
-                   <p className="max-w-md text-on-surface-variant opacity-40 mt-2 text-sm italic">The clean, metadata-rich Dashboard that organizes your literary world perfectly.</p>
+                   <h3 className="text-xl md:text-2xl font-serif font-bold text-bookvault-primary opacity-40">Visualizing Excellence</h3>
+                   <p className="max-w-md text-on-surface-variant opacity-40 mt-2 text-xs md:text-sm italic px-4">The metadata-rich Dashboard that organizes your literary world perfectly.</p>
                 </div>
             </div>
           </motion.div>
@@ -186,35 +185,35 @@ const Landing = () => {
       </header>
 
       {/* Benefits Section */}
-      <section className="py-24 md:py-40 bg-bookvault-surface-low/30 relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-24">
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-bookvault-primary mb-6 leading-tight">Built for Both Sides <br /> of the Page.</h2>
-            <p className="text-on-surface-variant max-w-xl mx-auto">Whether you’re consuming magic or creating it, BookVault provides the premium infrastructure you deserve.</p>
+      <section className="py-20 md:py-40 bg-bookvault-surface-low/30 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-16 md:mb-24">
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-bookvault-primary mb-4 md:mb-6 leading-tight">Built for Both Sides <br /> of the Page.</h2>
+            <p className="text-on-surface-variant text-sm md:text-base max-w-xl mx-auto px-4">Whether you’re consuming magic or creating it, BookVault provides the premium infrastructure you deserve.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
             {/* Readers Column */}
-            <div className="space-y-12">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 bg-bookvault-primary rounded-2xl flex items-center justify-center text-white shadow-premium">
-                  <Book size={24} />
+            <div className="space-y-8 md:space-y-12">
+              <div className="flex items-center gap-4 mb-4 md:mb-8 justify-center lg:justify-start">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-bookvault-primary rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-premium">
+                  <Book size={20} md:size={24} />
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-bookvault-primary uppercase tracking-widest text-[10px]">For Modern Readers</h3>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-bookvault-primary uppercase tracking-widest text-[9px] md:text-[10px]">For Modern Readers</h3>
               </div>
-              <div className="grid gap-6">
+              <div className="grid gap-4 md:gap-6">
                 {features.readers.map((f, i) => (
                   <motion.div 
                     key={i}
-                    whileHover={{ x: 10 }}
-                    className="bg-bookvault-surface-lowest p-8 rounded-[32px] border border-outline-variant/10 shadow-sm flex gap-6"
+                    whileHover={{ x: 5 }}
+                    className="bg-bookvault-surface-lowest p-6 md:p-8 rounded-[24px] md:rounded-[32px] border border-outline-variant/10 shadow-sm flex flex-col sm:flex-row gap-4 md:gap-6"
                   >
-                    <div className={`w-14 h-14 ${f.bg} ${f.color} rounded-2xl flex items-center justify-center flex-shrink-0`}>
-                      <f.icon size={28} />
+                    <div className={`w-12 h-12 md:w-14 md:h-14 ${f.bg} ${f.color} rounded-xl md:rounded-2xl flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0`}>
+                      <f.icon size={22} md:size={28} />
                     </div>
-                    <div>
-                      <h4 className="text-lg font-serif font-bold text-bookvault-primary mb-2">{f.title}</h4>
-                      <p className="text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
+                    <div className="text-center sm:text-left">
+                      <h4 className="text-base md:text-lg font-serif font-bold text-bookvault-primary mb-1 md:mb-2">{f.title}</h4>
+                      <p className="text-xs md:text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -222,26 +221,26 @@ const Landing = () => {
             </div>
 
             {/* Authors Column */}
-            <div className="space-y-12">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 bg-bookvault-secondary rounded-2xl flex items-center justify-center text-white shadow-premium">
-                  <Feather size={24} />
+            <div className="space-y-8 md:space-y-12">
+              <div className="flex items-center gap-4 mb-4 md:mb-8 justify-center lg:justify-end">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-bookvault-secondary rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-premium">
+                  <Feather size={20} md:size={24} />
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-bookvault-primary uppercase tracking-widest text-[10px]">For Professional Authors</h3>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-bookvault-primary uppercase tracking-widest text-[9px] md:text-[10px]">For Professional Authors</h3>
               </div>
-              <div className="grid gap-6">
+              <div className="grid gap-4 md:gap-6">
                 {features.authors.map((f, i) => (
                   <motion.div 
                     key={i}
-                    whileHover={{ x: -10 }}
-                    className="bg-bookvault-surface-lowest p-8 rounded-[32px] border border-outline-variant/10 shadow-sm flex flex-row-reverse gap-6 text-right"
+                    whileHover={{ x: -5 }}
+                    className="bg-bookvault-surface-lowest p-6 md:p-8 rounded-[24px] md:rounded-[32px] border border-outline-variant/10 shadow-sm flex flex-col sm:flex-row-reverse gap-4 md:gap-6 text-center sm:text-right"
                   >
-                    <div className={`w-14 h-14 ${f.bg} ${f.color} rounded-2xl flex items-center justify-center flex-shrink-0`}>
-                      <f.icon size={28} />
+                    <div className={`w-12 h-12 md:w-14 md:h-14 ${f.bg} ${f.color} rounded-xl md:rounded-2xl flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0`}>
+                      <f.icon size={22} md:size={28} />
                     </div>
-                    <div>
-                      <h4 className="text-lg font-serif font-bold text-bookvault-primary mb-2">{f.title}</h4>
-                      <p className="text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
+                    <div className="flex-1">
+                      <h4 className="text-base md:text-lg font-serif font-bold text-bookvault-primary mb-1 md:mb-2">{f.title}</h4>
+                      <p className="text-xs md:text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
                     </div>
                   </motion.div>
                 ))}

@@ -151,12 +151,12 @@ const Dashboard = () => {
           onCategoryChange={setActiveCategory} 
         />
         
-        <main className="flex-1 p-4 md:p-8 lg:ml-64 transition-all duration-300">
+        <main className="flex-1 p-4 md:p-8 lg:pl-64 transition-all duration-300">
           {/* Header Section */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <header className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-bookvault-primary tracking-tight">Your Digital Library</h1>
-              <p className="text-on-surface-variant/60 text-sm font-medium italic">Discover treasures you've archived.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
+            <header className="space-y-1 md:space-y-2">
+              <h1 className="text-2xl md:text-4xl font-serif font-bold text-bookvault-primary tracking-tight">Your Digital Library</h1>
+              <p className="text-on-surface-variant/60 text-xs md:text-sm font-medium italic">Discover treasures you've archived.</p>
             </header>
 
             {/* Category Filter - Scrollable on Mobile */}

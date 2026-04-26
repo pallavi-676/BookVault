@@ -179,7 +179,7 @@ const Navbar = ({ onUploadClick }) => {
           className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 bg-bookvault-primary text-white rounded-full text-sm font-medium hover:bg-bookvault-primary-container transition-all shadow-premium"
         >
           <Upload size={18} />
-          <span className="hidden md:inline">Upload</span>
+          <span className="hidden sm:inline">Upload</span>
         </button>
 
         {/* Mobile Search Toggle */}
@@ -190,12 +190,12 @@ const Navbar = ({ onUploadClick }) => {
           <Search size={20} />
         </button>
 
-        <div className="h-8 w-px bg-outline-variant/30 ml-2 hidden md:block" />
+        <div className="h-8 w-px bg-outline-variant/30 ml-2 hidden lg:block" />
 
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-1 md:gap-4">
           <button
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            className="flex p-2 hover:bg-bookvault-surface-low rounded-full transition-colors relative group"
+            className="hidden sm:flex p-2 hover:bg-bookvault-surface-low rounded-full transition-colors relative group"
             title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
             {theme === 'light' ? (
@@ -237,7 +237,7 @@ const Navbar = ({ onUploadClick }) => {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute right-0 mt-4 w-[380px] bg-bookvault-surface-lowest rounded-[32px] shadow-2xl border border-outline-variant/10 overflow-hidden z-[100]"
+                  className="absolute right-0 mt-4 w-[calc(100vw-32px)] md:w-[380px] bg-bookvault-surface-lowest rounded-[32px] shadow-2xl border border-outline-variant/10 overflow-hidden z-[100]"
                 >
                   <div className="p-6 border-b border-outline-variant/5 flex items-center justify-between">
                     <h3 className="font-serif font-bold text-bookvault-primary text-lg">Resonance</h3>
@@ -367,7 +367,7 @@ const Navbar = ({ onUploadClick }) => {
 
           <button
             onClick={logout}
-            className="p-2 hover:bg-bookvault-surface-low rounded-full transition-colors text-red-500/70 hover:text-red-600"
+            className="hidden md:p-2 hover:bg-bookvault-surface-low rounded-full transition-colors text-red-500/70 hover:text-red-600 sm:block"
           >
             <LogOut size={20} />
           </button>
