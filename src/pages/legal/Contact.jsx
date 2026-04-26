@@ -39,7 +39,7 @@ const Contact = () => {
       setSuccess(true)
     } catch (err) {
       console.error('Support submission failed:', err)
-      setError('Failed to send request. Please try again or email support@bookvault.app directly.')
+      setError('Failed to send request. Please try again or email bookvaultteam@gmail.com directly.')
     } finally {
       setLoading(false)
     }
@@ -64,7 +64,8 @@ const Contact = () => {
               </div>
               <div>
                 <p className="text-xs font-black uppercase tracking-widest text-outline-variant mb-1">Email Us</p>
-                <a href="mailto:support@bookvault.app" className="font-bold text-bookvault-primary">support@bookvault.app</a>
+                <a href="mailto:bookvaultteam@gmail.com" className="font-bold text-bookvault-primary hover:underline">bookvaultteam@gmail.com</a>
+                <p className="text-xs text-on-surface-variant mt-1 italic">We typically reply within 24–48 hours.</p>
               </div>
             </div>
             
@@ -75,6 +76,19 @@ const Contact = () => {
               <div>
                 <p className="text-xs font-black uppercase tracking-widest text-outline-variant mb-1">Vault HQ</p>
                 <p className="font-bold text-bookvault-primary">Distraction-Free Cloud</p>
+              </div>
+            </div>
+
+            {/* Copyright & Takedowns */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/20 flex items-center justify-center text-red-600 dark:text-red-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <div>
+                <p className="text-xs font-black uppercase tracking-widest text-red-500 mb-1">Copyright & Content Removal</p>
+                <p className="text-sm text-on-surface-variant leading-relaxed">
+                  To report unauthorized use of copyrighted work or to request content removal, please email us directly with the subject <strong>"DMCA/Takedown Request"</strong>.
+                </p>
               </div>
             </div>
           </div>
@@ -135,13 +149,18 @@ const Contact = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-outline-variant ml-4">Subject</label>
-                  <input 
+                  <select 
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    placeholder="Brief summary of request"
-                    className="w-full px-6 py-4 rounded-2xl bg-bookvault-surface-low border border-outline-variant/10 focus:border-bookvault-primary outline-none transition-all"
-                  />
+                    className="w-full px-6 py-4 rounded-2xl bg-bookvault-surface-low border border-outline-variant/10 focus:border-bookvault-primary outline-none transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="" disabled>Select a topic</option>
+                    <option value="General Support">General Support</option>
+                    <option value="Bug Report">🐛 Report a Bug / Glitch</option>
+                    <option value="Feature Request">✨ Feature Request</option>
+                    <option value="Account Issue">Account & Login Issue</option>
+                  </select>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-outline-variant ml-4">Message</label>

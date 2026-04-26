@@ -38,7 +38,7 @@ const CommunityGuidelines = () => {
       <section>
         <h2>4. Community Reporting</h2>
         <p>
-          If you encounter content or behavior that violates these guidelines, please use the report button or contact our support team at <strong>support@bookvault.app</strong>.
+          If you encounter content or behavior that violates these guidelines, please use the report button or contact our support team at <a href="mailto:bookvaultteam@gmail.com" className="text-bookvault-primary font-bold hover:underline">bookvaultteam@gmail.com</a>.
         </p>
       </section>
     </TrustLayout>

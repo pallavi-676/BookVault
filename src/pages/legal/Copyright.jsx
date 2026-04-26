@@ -14,7 +14,7 @@ const Copyright = () => {
       <section>
         <h2>How to File a Takedown Notice</h2>
         <p>
-          If you believe your copyrighted work is being used on BookVault without authorization, please submit a formal notice to our designated copyright agent at <strong>copyright@bookvault.app</strong> (or <strong>support@bookvault.app</strong>) with the following information:
+          If you believe your copyrighted work is being used on BookVault without authorization, please submit a formal notice to our designated copyright agent at <a href="mailto:bookvaultteam@gmail.com?subject=DMCA/Takedown Request" className="text-bookvault-primary font-bold hover:underline">bookvaultteam@gmail.com</a> with the following information:
         </p>
         <ol>
           <li>A description of the copyrighted work that has been infringed.</li>

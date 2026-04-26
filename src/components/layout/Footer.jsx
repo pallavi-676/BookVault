@@ -89,7 +89,7 @@ const Footer = () => {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-xs font-bold text-bookvault-primary">
               <Mail size={14} />
-              <a href="mailto:support@bookvault.app">support@bookvault.app</a>
+              <a href="mailto:bookvaultteam@gmail.com" className="hover:underline">bookvaultteam@gmail.com</a>
             </div>
           </div>
         </div>

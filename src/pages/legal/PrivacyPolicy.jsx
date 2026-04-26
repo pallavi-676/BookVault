@@ -53,7 +53,7 @@ const PrivacyPolicy = () => {
       <section>
         <h2>6. Contact Us</h2>
         <p>
-          If you have questions about this policy, contact us at <strong>support@bookvault.app</strong>.
+          If you have questions about this policy, contact us at <a href="mailto:bookvaultteam@gmail.com" className="text-bookvault-primary font-bold hover:underline">bookvaultteam@gmail.com</a>.
         </p>
       </section>
     </TrustLayout>
