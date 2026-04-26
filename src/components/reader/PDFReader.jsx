@@ -17,6 +17,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   const [pdfInstance, setPdfInstance] = useState(null)
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const [scale, setScale] = useState(1.0)
+  const isMobile = containerWidth < 768;
 
   // Track window resize to ensure fluid mobile stretching
   useEffect(() => {
@@ -243,7 +244,6 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     </motion.div>
   );
 
-  const isMobile = containerWidth < 768;
 
   return (
     <div 
