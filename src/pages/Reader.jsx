@@ -509,7 +509,7 @@ const Reader = () => {
         onTouchEnd={handleSelection}
         onClick={(e) => {
           const width = window.innerWidth
-          const x = e.clientX || (e.touches && e.touches[0].clientX)
+          const x = e.clientX || (e.changedTouches && e.changedTouches[0].clientX)
           if (x && x > width * 0.25 && x < width * 0.75) {
             setShowNav(!showNav)
           }

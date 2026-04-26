@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Share2, PenTool, Palette } from 'lucide-react'
+import { Share2, PenTool, Palette, Highlighter, MessageSquarePlus, ClipboardCopy } from 'lucide-react'
 import AdvancedColorPicker from './AdvancedColorPicker'
 
 const SelectionToolbar = ({ position, selectedText, onAction, onClose }) => {
@@ -109,7 +109,7 @@ const SelectionToolbar = ({ position, selectedText, onAction, onClose }) => {
                onClick={handleCopy}
                className="p-3 hover:bg-white/10 rounded-full transition-colors flex flex-col items-center gap-1"
             >
-               <Clipboard size={20} />
+               <ClipboardCopy size={20} />
                <span className="text-[9px] font-black uppercase tracking-widest">Copy</span>
             </button>
             <button 

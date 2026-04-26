@@ -140,7 +140,7 @@ const Landing = () => {
             <span className="inline-flex items-center gap-2 px-3 md:px-4 py-2 bg-bookvault-primary/5 text-bookvault-primary rounded-full text-[9px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.3em] mb-6 md:mb-8 border border-bookvault-primary/10">
               <Sparkles size={14} className="animate-pulse" /> Preserving the Sanctity of Literature
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif font-bold text-bookvault-primary leading-[1.1] mb-6 md:mb-8 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif font-bold text-bookvault-primary leading-[1.1] mb-6 md:mb-8 tracking-tight">
               The Immersive Home <br className="hidden md:block" />
               for Your Library.
             </h1>

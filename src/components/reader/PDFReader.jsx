@@ -11,7 +11,7 @@ import 'react-pdf/dist/Page/TextLayer.css'
 // Use a reliable worker URL
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
-import { Highlighter, Share2, Clipboard, MessageSquarePlus } from 'lucide-react'
+import { Highlighter, Share2, ClipboardCopy, MessageSquarePlus } from 'lucide-react'
 
 const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad, onTOCLoad, theme, fontSize }, ref) => {
   const [pdfInstance, setPdfInstance] = useState(null)
@@ -384,7 +384,8 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
                     onClick={() => {/* Note logic */}} 
                   />
                   <SelectionButton 
-                    icon={<Clipboard size={16} />} 
+                  <SelectionButton 
+                    icon={<ClipboardCopy size={16} />} 
                     onClick={() => {
                       navigator.clipboard.writeText(mobileSelection.text);
                       setMobileSelection(null);
