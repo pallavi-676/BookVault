@@ -34,17 +34,24 @@ const SelectionToolbar = ({ position, selectedText, onAction, onClose }) => {
     onClose()
   }
 
+  const isMobile = window.innerWidth < 768;
+  const toolbarWidth = isMobile ? Math.min(window.innerWidth - 40, 320) : 320;
+
   return (
     <div 
       className="fixed z-[100] pointer-events-none transition-all duration-200 shadow-2xl"
-      style={{ top: position.y - 120, left: Math.max(20, position.x - 160) }}
+      style={{ 
+        top: Math.max(80, position.y - 140), 
+        left: Math.min(window.innerWidth - toolbarWidth - 20, Math.max(20, position.x - (toolbarWidth / 2))) 
+      }}
     >
       <motion.div 
         onMouseDown={(e) => e.preventDefault()}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 10 }}
-        className="pointer-events-auto bg-[#ede9fe] rounded-sm w-[320px] flex flex-col overflow-hidden border border-black/5"
+        initial={{ opacity: 0, scale: 0.9, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 10 }}
+        className="pointer-events-auto bg-[#ede9fe]/95 backdrop-blur-xl rounded-2xl flex flex-col overflow-hidden border border-black/5 shadow-2xl"
+        style={{ width: toolbarWidth }}
       >
         {/* Top Row: Formatting Styles */}
         <div className="flex items-center justify-between px-6 py-3 border-b border-black/5">

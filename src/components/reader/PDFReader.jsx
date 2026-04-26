@@ -12,6 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad, onTOCLoad, theme, fontSize }, ref) => {
   const [pdfInstance, setPdfInstance] = useState(null)
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
+  const [scale, setScale] = useState(1.0)
 
   // Track window resize to ensure fluid mobile stretching
   useEffect(() => {
@@ -28,8 +29,12 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
       clearTimeout(timeout);
     };
   }, []);
-  
+
+  // Expose zoom controls to parent via ref
   useImperativeHandle(ref, () => ({
+    zoomIn: () => setScale(prev => Math.min(prev + 0.2, 3.0)),
+    zoomOut: () => setScale(prev => Math.max(prev - 0.2, 0.5)),
+    resetZoom: () => setScale(1.0),
     search: async (query) => {
       if (!pdfInstance || !query) return []
       const results = []
@@ -59,8 +64,15 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     }
   }))
   const [numPages, setNumPages] = useState(null)
+  const [pageLoading, setPageLoading] = useState(false)
   const { annotations, removeAnnotation } = useStore()
   const { id: bookId } = useParams()
+
+  useEffect(() => {
+    setPageLoading(true)
+    const timer = setTimeout(() => setPageLoading(false), 300)
+    return () => clearTimeout(timer)
+  }, [currentPage])
   
   // Active deletion popover state
   const [activeHighlight, setActiveHighlight] = useState(null)
@@ -136,9 +148,14 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     return { backgroundColor: color, mixBlendMode: 'multiply' } // native multiply blend for true highlight effect
   }
 
+  const isMobile = containerWidth < 768;
+
   return (
     <div 
-      className="flex flex-col items-center w-full h-full overflow-auto py-10 relative group"
+      className={clsx(
+        "flex flex-col items-center w-full h-full overflow-auto relative group transition-colors duration-300",
+        isMobile ? "py-0 px-0" : "py-10"
+      )}
       onClick={() => setActiveHighlight(null)}
     >
       <Document
@@ -147,13 +164,12 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
         onLoadError={onDocumentLoadError}
         onSourceError={onSourceError}
         loading={
-          <div className="flex flex-col items-center justify-center w-[90vw] md:w-[800px] h-[600px] bg-black/5 animate-pulse rounded-lg border border-black/5 shadow-sm overflow-hidden relative">
+          <div className="flex flex-col items-center justify-center w-full h-[600px] bg-black/5 animate-pulse overflow-hidden relative">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
               <div className="w-10 h-10 border-4 border-bookvault-primary/20 border-t-bookvault-primary rounded-full animate-spin" />
             </div>
             {/* Skeleton lines for reading visualization */}
             <div className="w-full h-full p-12 opacity-30 flex flex-col gap-6">
-              <div className="h-6 bg-black/10 rounded w-1/3 mb-10 mx-auto" />
               {[...Array(10)].map((_, i) => (
                 <div key={i} className={`h-3 bg-black/10 rounded ${i % 3 === 0 ? 'w-11/12' : i % 2 === 0 ? 'w-full' : 'w-5/6'}`} />
               ))}
@@ -161,10 +177,23 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           </div>
         }
       >
-        <div className="relative shadow-premium rounded-sm bg-white" style={{ touchAction: 'pan-y pinch-zoom' }}>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: pageLoading ? 0 : 1 }}
+          transition={{ duration: 0.3 }}
+          className={clsx(
+            "relative bg-white shadow-premium transition-all duration-300",
+            isMobile ? "" : "rounded-sm"
+          )} 
+          style={{ 
+            touchAction: 'pan-y pinch-zoom',
+            width: isMobile ? '100vw' : 'fit-content'
+          }}
+        >
           <Page 
             pageNumber={currentPage} 
-            width={Math.min(containerWidth * (containerWidth < 768 ? 0.95 : 0.8), 800) * (fontSize ? fontSize / 16 : 1)}
+            width={isMobile ? containerWidth * scale : Math.min(containerWidth * 0.8, 800) * scale}
+            loading={null}
             renderAnnotationLayer={false}
             renderTextLayer={true}
             onRenderError={(err) => console.error('Page Render Error:', err)}
@@ -219,7 +248,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </Document>
     </div>
   )

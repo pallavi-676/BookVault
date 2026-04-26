@@ -233,10 +233,14 @@ const Reader = () => {
   useEffect(() => {
     let timeout;
     const onSelectionChange = () => {
+      // Immediate clear for fast responsiveness
       clearTimeout(timeout);
+      
+      // On mobile, we wait a bit longer for the user to finish their touch drag
+      const isMobile = window.innerWidth < 768;
       timeout = setTimeout(() => {
         handleSelection();
-      }, 400); 
+      }, isMobile ? 600 : 400); 
     };
 
     document.addEventListener('selectionchange', onSelectionChange);
@@ -416,6 +420,37 @@ const Reader = () => {
         )}
       </AnimatePresence>
 
+      {/* Mobile Zoom Controls Overlay */}
+      <AnimatePresence>
+         {(window.innerWidth < 768 && showNav) && (
+           <motion.div 
+             initial={{ x: 100 }}
+             animate={{ x: 0 }}
+             exit={{ x: 100 }}
+             className="fixed right-4 bottom-24 flex flex-col gap-2 z-40"
+           >
+             <button 
+               onClick={() => readerRef.current?.zoomIn?.()}
+               className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full shadow-lg flex items-center justify-center text-bookvault-primary border border-black/5"
+             >
+               <span className="text-xl font-bold">+</span>
+             </button>
+             <button 
+               onClick={() => readerRef.current?.zoomOut?.()}
+               className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full shadow-lg flex items-center justify-center text-bookvault-primary border border-black/5"
+             >
+               <span className="text-xl font-bold">−</span>
+             </button>
+             <button 
+               onClick={() => readerRef.current?.resetZoom?.()}
+               className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full shadow-lg flex items-center justify-center text-bookvault-primary border border-black/5"
+             >
+               <span className="text-xs font-bold">1:1</span>
+             </button>
+           </motion.div>
+         )}
+      </AnimatePresence>
+
       {/* Settings Popover */}
       <AnimatePresence>
         {showSettings && (
@@ -499,7 +534,6 @@ const Reader = () => {
                 onDocumentLoad={handleDocumentLoad}
                 onTOCLoad={setToc}
                 theme={theme}
-                fontSize={readerSettings?.fontSize}
               />
             )}
             
