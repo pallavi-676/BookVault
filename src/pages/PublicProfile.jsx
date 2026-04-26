@@ -404,7 +404,6 @@ const PublicProfileContent = () => {
                        )}
                    </div>
                 )}
-             </div>
           </header>
 
           <section>
