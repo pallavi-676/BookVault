@@ -155,7 +155,7 @@ const Dashboard = () => {
           {/* Header Section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 mb-6 md:mb-12">
             <header className="space-y-0.5 md:space-y-2">
-              <h1 className="text-xl md:text-4xl font-serif font-bold text-bookvault-primary tracking-tight">Your Digital Library</h1>
+              <h1 className="text-lg md:text-4xl font-serif font-bold text-bookvault-primary tracking-tight truncate">Your Digital Library</h1>
               <p className="text-on-surface-variant/60 text-[10px] md:text-sm font-medium italic">Discover treasures you've archived.</p>
             </header>
 
