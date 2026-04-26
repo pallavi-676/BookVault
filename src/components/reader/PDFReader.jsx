@@ -183,7 +183,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
         }
       `}</style>
       <Document
-        className="w-full"
+        className="my-auto w-full"
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={onDocumentLoadError}
@@ -218,6 +218,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
               position: 'relative',
               left: '50%',
               transform: 'translateX(-50%)',
+              WebkitFilter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none',
               filter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'
             } : {
               margin: '0 auto',
