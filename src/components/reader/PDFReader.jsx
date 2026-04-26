@@ -17,7 +17,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   const [pdfInstance, setPdfInstance] = useState(null)
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const isMobile = containerWidth < 768;
-  const [scale, setScale] = useState(isMobile ? 1.25 : 1.0)
+  const [scale, setScale] = useState(isMobile ? 1.4 : 1.0)
 
   // Track window resize to ensure fluid mobile stretching
   useEffect(() => {
@@ -130,7 +130,11 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     
     // Only start selection if touching text layer
     if (target?.closest('.react-pdf__Page__textContent')) {
-      const containerRect = document.querySelector('.reader-page-container').getBoundingClientRect();
+      const containerSelector = isMobile ? '.mobile-reader-content' : '.reader-page-container';
+      const container = document.querySelector(containerSelector);
+      if (!container) return;
+      
+      const containerRect = container.getBoundingClientRect();
       const startPoint = { 
         x: touch.clientX - containerRect.left, 
         y: touch.clientY - containerRect.top 
@@ -279,8 +283,8 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           animate={{ opacity: pageLoading ? 0 : 1 }}
           transition={{ duration: 0.3 }}
           className={clsx(
-            "relative bg-white shadow-premium transition-all duration-300 reader-page-container",
-            isMobile ? "mobile-reader-content" : "rounded-sm"
+            "relative transition-all duration-300 reader-page-container overflow-hidden",
+            isMobile ? "mobile-reader-content" : "rounded-sm shadow-premium bg-white"
           )} 
           style={{ 
             touchAction: isSelecting ? 'none' : 'auto',
