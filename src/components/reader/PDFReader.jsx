@@ -178,9 +178,6 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
       onClick={() => setActiveHighlight(null)}
     >
       <style>{`
-        .react-pdf__Page__canvas, .react-pdf__Page__textContent {
-          filter: ${theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'} !important;
-        }
         .react-pdf__Page {
            background-color: transparent !important;
         }
@@ -205,17 +202,18 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
         }
       >
         <motion.div 
+          key={currentPage}
           initial={{ opacity: 0 }}
-          animate={{ opacity: pageLoading ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
           className={clsx(
-            "relative transition-all duration-300 reader-page-container overflow-hidden",
-            isMobile ? "mobile-reader-content flex justify-center" : "rounded-sm shadow-premium bg-white"
+            "relative transition-all duration-300 reader-page-container flex-shrink-0 overflow-hidden",
+            isMobile ? "mobile-reader-content" : "rounded-sm shadow-premium bg-white"
           )} 
           style={{ 
-            width: isMobile ? '100vw' : 'fit-content',
+            width: 'fit-content',
             margin: '0 auto',
-            backgroundColor: 'transparent'
+            backgroundColor: isMobile ? 'transparent' : 'white'
           }}
           onContextMenu={(e) => isMobile && e.preventDefault()}
         >
@@ -227,6 +225,14 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
             renderTextLayer={true}
             onRenderError={(err) => console.error('Page Render Error:', err)}
           />
+
+          {/* High-Performance Theme Tinting Overlays */}
+          {theme === 'sepia' && (
+            <div className="absolute inset-0 pointer-events-none z-20 bg-[#EAD7D1] mix-blend-multiply" />
+          )}
+          {theme === 'dark' && (
+            <div className="absolute inset-0 pointer-events-none z-20 bg-[#d1d1d1] mix-blend-difference" />
+          )}
 
 
           
