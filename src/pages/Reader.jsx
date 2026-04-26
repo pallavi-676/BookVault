@@ -206,24 +206,45 @@ const Reader = () => {
       const rect = range.getBoundingClientRect()
       
       let rects = null
-      if (book.type === 'pdf') {
+      if (book?.type === 'pdf') {
         const pageEl = document.querySelector('.react-pdf__Page')
         if (pageEl) {
           rects = stitchRects(range.getClientRects(), pageEl.getBoundingClientRect())
         }
       }
 
-      setSelection({
-        active: true,
-        text,
-        x: rect.left + rect.width / 2,
-        y: rect.top,
-        rects
+      setSelection(prev => {
+        // Prevent unnecessary state updates if nothing changed
+        if (prev.active && prev.text === text) return prev;
+        return {
+          active: true,
+          text,
+          x: rect.left + rect.width / 2,
+          y: rect.top,
+          rects
+        }
       })
     } else {
-      setSelection({ ...selection, active: false })
+      setSelection(prev => prev.active ? { ...prev, active: false } : prev)
     }
   }
+
+  // Mobile Safari & Android intelligent selection debouncer
+  useEffect(() => {
+    let timeout;
+    const onSelectionChange = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        handleSelection();
+      }, 400); 
+    };
+
+    document.addEventListener('selectionchange', onSelectionChange);
+    return () => {
+      document.removeEventListener('selectionchange', onSelectionChange);
+      clearTimeout(timeout);
+    };
+  }, [book]);
 
   const onToolbarAction = (action, data) => {
     if (action === 'highlight') {
@@ -450,10 +471,11 @@ const Reader = () => {
       <main 
         className="flex-1 relative transition-all duration-500 overflow-hidden"
         onMouseUp={handleSelection}
+        onTouchEnd={handleSelection}
         onClick={(e) => {
           const width = window.innerWidth
-          const x = e.clientX
-          if (x > width * 0.25 && x < width * 0.75) {
+          const x = e.clientX || (e.touches && e.touches[0].clientX)
+          if (x && x > width * 0.25 && x < width * 0.75) {
             setShowNav(!showNav)
           }
         }}
@@ -508,7 +530,7 @@ const Reader = () => {
 
         {/* Navigation Overlays */}
         <div 
-          className="absolute inset-y-0 left-0 w-[15%] md:w-[20%] z-10 cursor-alias flex items-center justify-start pl-4 md:pl-8 group"
+          className="absolute inset-y-0 left-0 w-[25%] md:w-[20%] z-10 cursor-alias flex items-center justify-start pl-4 md:pl-8 group"
           onClick={() => {
             if (book.type === 'pdf' && currentLocation > 1) handleLocationChange(currentLocation - 1)
           }}
@@ -518,7 +540,7 @@ const Reader = () => {
           </div>
         </div>
         <div 
-          className="absolute inset-y-0 right-0 w-[15%] md:w-[20%] z-10 cursor-alias flex items-center justify-end pr-4 md:pr-8 group"
+          className="absolute inset-y-0 right-0 w-[25%] md:w-[20%] z-10 cursor-alias flex items-center justify-end pr-4 md:pr-8 group"
           onClick={() => {
             if (book.type === 'pdf' && currentLocation < numPages) handleLocationChange(currentLocation + 1)
           }}

@@ -11,6 +11,23 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 
 const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad, onTOCLoad, theme, fontSize }, ref) => {
   const [pdfInstance, setPdfInstance] = useState(null)
+  const [containerWidth, setContainerWidth] = useState(window.innerWidth)
+
+  // Track window resize to ensure fluid mobile stretching
+  useEffect(() => {
+    let timeout;
+    const handleResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setContainerWidth(window.innerWidth);
+      }, 50);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeout);
+    };
+  }, []);
   
   useImperativeHandle(ref, () => ({
     search: async (query) => {
@@ -130,16 +147,24 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
         onLoadError={onDocumentLoadError}
         onSourceError={onSourceError}
         loading={
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-bookvault-primary/20 border-t-bookvault-primary rounded-full animate-spin" />
-            <p className="font-serif italic opacity-50 text-bookvault-primary">Opening your manuscript...</p>
+          <div className="flex flex-col items-center justify-center w-[90vw] md:w-[800px] h-[600px] bg-black/5 animate-pulse rounded-lg border border-black/5 shadow-sm overflow-hidden relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
+              <div className="w-10 h-10 border-4 border-bookvault-primary/20 border-t-bookvault-primary rounded-full animate-spin" />
+            </div>
+            {/* Skeleton lines for reading visualization */}
+            <div className="w-full h-full p-12 opacity-30 flex flex-col gap-6">
+              <div className="h-6 bg-black/10 rounded w-1/3 mb-10 mx-auto" />
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className={`h-3 bg-black/10 rounded ${i % 3 === 0 ? 'w-11/12' : i % 2 === 0 ? 'w-full' : 'w-5/6'}`} />
+              ))}
+            </div>
           </div>
         }
       >
-        <div className="relative shadow-premium rounded-sm bg-white">
+        <div className="relative shadow-premium rounded-sm bg-white" style={{ touchAction: 'pan-y pinch-zoom' }}>
           <Page 
             pageNumber={currentPage} 
-            width={Math.min(window.innerWidth * 0.8, 800) * (fontSize ? fontSize / 16 : 1)}
+            width={Math.min(containerWidth * (containerWidth < 768 ? 0.95 : 0.8), 800) * (fontSize ? fontSize / 16 : 1)}
             renderAnnotationLayer={false}
             renderTextLayer={true}
             onRenderError={(err) => console.error('Page Render Error:', err)}
