@@ -183,6 +183,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
         }
       `}</style>
       <Document
+        className="my-auto flex flex-col items-center w-full"
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={onDocumentLoadError}
