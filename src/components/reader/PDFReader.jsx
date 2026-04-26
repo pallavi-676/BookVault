@@ -217,28 +217,25 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     return { backgroundColor: color, mixBlendMode: 'multiply' } // native multiply blend for true highlight effect
   }
 
-  // Virtual Selection Handles for Mobile
-  const SelectionHandle = ({ type, position }) => (
-    <motion.div
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      className="absolute w-4 h-4 bg-bookvault-primary rounded-full z-[80] shadow-lg flex items-center justify-center cursor-pointer pointer-events-auto"
-      style={{ 
-        left: `${position.left}%`, 
-        top: type === 'start' ? `${position.top}%` : `${position.top + position.height}%`,
-        transform: `translate(-50%, ${type === 'start' ? '-100%' : '0%'})`
-      }}
-    >
-      <div className="w-1.5 h-1.5 bg-white rounded-full" />
-    </motion.div>
-  );
+  const getThemeColors = () => {
+    switch (theme) {
+      case 'dark':
+        return { bg: 'bg-[#1a1a1a]', paper: '#18181b', text: '#d1d1d1' };
+      case 'sepia':
+        return { bg: 'bg-[#EAD7D1]', paper: '#EAD7D1', text: '#5D3A3A' };
+      default:
+        return { bg: 'bg-white', paper: '#ffffff', text: '#1a1c1c' };
+    }
+  };
+
+  const colors = getThemeColors();
 
 
   return (
     <div 
       className={clsx(
         "flex flex-col items-center w-full h-full overflow-auto relative group transition-colors duration-300",
-        isMobile ? "py-4 px-2 bg-[#d2cbb8] dark:bg-zinc-900" : "py-10 bg-bookvault-surface"
+        isMobile ? `${colors.bg} py-0 px-0` : "py-10 bg-bookvault-surface"
       )}
       onClick={() => setActiveHighlight(null)}
       onTouchStart={handleTouchStart}
@@ -281,15 +278,17 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           )} 
           style={{ 
             touchAction: isSelecting ? 'none' : 'auto',
-            width: isMobile ? 'calc(100vw - 32px)' : 'fit-content',
+            width: isMobile ? '100vw' : 'fit-content',
             margin: '0 auto',
-            backgroundColor: theme === 'dark' ? '#18181b' : '#f4f1ea' 
+            backgroundColor: colors.paper,
+            filter: theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none',
+            mixBlendMode: theme === 'sepia' ? 'multiply' : 'normal'
           }}
           onContextMenu={(e) => isMobile && e.preventDefault()}
         >
           <Page 
             pageNumber={currentPage} 
-            width={isMobile ? (containerWidth - 40) * scale : Math.min(containerWidth * 0.8, 800) * scale}
+            width={isMobile ? (containerWidth) * scale : Math.min(containerWidth * 0.8, 800) * scale}
             loading={null}
             renderAnnotationLayer={false}
             renderTextLayer={true}
