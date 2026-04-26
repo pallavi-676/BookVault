@@ -240,12 +240,14 @@ const Reader = () => {
       const isMobile = window.innerWidth < 768;
       timeout = setTimeout(() => {
         handleSelection();
-      }, isMobile ? 600 : 400); 
+      }, isMobile ? 300 : 400); 
     };
 
     document.addEventListener('selectionchange', onSelectionChange);
+    document.addEventListener('touchend', onSelectionChange);
     return () => {
       document.removeEventListener('selectionchange', onSelectionChange);
+      document.removeEventListener('touchend', onSelectionChange);
       clearTimeout(timeout);
     };
   }, [book]);
