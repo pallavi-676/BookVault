@@ -81,74 +81,8 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   
   // Active deletion popover state
   const [activeHighlight, setActiveHighlight] = useState(null)
-  const [mobileSelection, setMobileSelection] = useState(null) // { rect, text, range }
-  const [isSelecting, setIsSelecting] = useState(false)
-  
-  // Selection handling for mobile
-  useEffect(() => {
-    if (!isMobile) return;
-    
-    const handleSelectionChange = () => {
-      const selection = window.getSelection();
-      if (!selection || selection.isCollapsed || selection.rangeCount === 0) {
-        if (!isSelecting) setMobileSelection(null);
-        return;
-      }
-      
-      const range = selection.getRangeAt(0);
-      const rects = range.getClientRects();
-      if (rects.length === 0) return;
-      
-      // Get the bounding rect for the toolbar positioning
-      const lastRect = rects[rects.length - 1];
-      const containerRect = document.querySelector('.reader-page-container')?.getBoundingClientRect();
-      
-      if (!containerRect) return;
-      
-      setMobileSelection({
-        text: selection.toString(),
-        rect: {
-          top: lastRect.top - containerRect.top,
-          left: lastRect.left - containerRect.left + (lastRect.width / 2),
-          width: lastRect.width
-        },
-        range: range
-      });
-    };
-
-    document.addEventListener('selectionchange', handleSelectionChange);
-    return () => document.removeEventListener('selectionchange', handleSelectionChange);
-  }, [isMobile, isSelecting]);
-
-  // Mobile selection is now handled unified by the parent Reader.jsx
-  // to ensure consistent annotation saving.
-
-  const handleTouchStart = (e) => {
-    if (!isMobile) return;
-    const touch = e.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    
-    // Only start selection if touching text layer
-    if (target?.closest('.react-pdf__Page__textContent')) {
-      const containerSelector = isMobile ? '.mobile-reader-content' : '.reader-page-container';
-      const container = document.querySelector(containerSelector);
-      if (!container) return;
-      
-      const containerRect = container.getBoundingClientRect();
-      const startPoint = { 
-        x: touch.clientX - containerRect.left, 
-        y: touch.clientY - containerRect.top 
-      };
-      
-      // Long press detection
-      const timer = setTimeout(() => {
-        setIsSelecting(true);
-        // Start virtual selection...
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  };
+  // Mobile selection is seamlessly handled by Reader.jsx 
+  // via native browser selectionchange events.
 
   const bookAnnotations = annotations?.[bookId] || []
   const pageAnnotations = bookAnnotations.filter(
@@ -238,22 +172,14 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   return (
     <div 
       className={clsx(
-        "flex flex-col items-center w-full h-full overflow-x-hidden overflow-y-auto relative group transition-colors duration-300",
-        isMobile ? `${colors.bg} py-0 px-0` : "py-10 bg-bookvault-surface"
+        "flex flex-col items-center w-full h-full overflow-y-auto overflow-x-hidden relative group transition-colors duration-300",
+        isMobile ? `${colors.bg} px-0` : "py-10 bg-bookvault-surface"
       )}
       onClick={() => setActiveHighlight(null)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={() => {
-        setTimeout(() => {
-          const selection = window.getSelection();
-          if (selection && !selection.isCollapsed) {}
-        }, 100);
-      }}
     >
       <style>{`
         .react-pdf__Page__canvas, .react-pdf__Page__textContent {
-          mix-blend-mode: ${theme === 'sepia' ? 'multiply' : 'normal'};
-          filter: ${theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'};
+          filter: ${theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'} !important;
         }
         .react-pdf__Page {
            background-color: transparent !important;
@@ -284,15 +210,12 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           transition={{ duration: 0.3 }}
           className={clsx(
             "relative transition-all duration-300 reader-page-container overflow-hidden",
-            isMobile ? "mobile-reader-content" : "rounded-sm shadow-premium bg-white"
+            isMobile ? "mobile-reader-content flex justify-center" : "rounded-sm shadow-premium bg-white"
           )} 
           style={{ 
-            touchAction: isSelecting ? 'none' : 'auto',
             width: isMobile ? '100vw' : 'fit-content',
             margin: '0 auto',
-            backgroundColor: colors.paper,
-            filter: theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none',
-            mixBlendMode: theme === 'sepia' ? 'multiply' : 'normal'
+            backgroundColor: 'transparent'
           }}
           onContextMenu={(e) => isMobile && e.preventDefault()}
         >
