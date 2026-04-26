@@ -96,6 +96,26 @@ html {
   overscroll-behavior: none;
 }
 
+/* Custom Selection UI Protections */
+.mobile-reader-content {
+  -webkit-touch-callout: none;
+}
+
+.mobile-reader-content ::selection {
+  background: rgba(var(--bookvault-primary-rgb), 0.2);
+}
+
+@media (max-width: 768px) {
+  .mobile-reader-content ::selection {
+    background: transparent;
+  }
+}
+
+/* Allow selection inside the actual text layer but remove native handles on Android if possible */
+.mobile-reader-content .react-pdf__Page__textContent {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   min-width: 320px;
   min-height: 100vh;

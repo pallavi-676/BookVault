@@ -39,10 +39,10 @@ const SelectionToolbar = ({ position, selectedText, onAction, onClose }) => {
 
   return (
     <div 
-      className="fixed z-[100] pointer-events-none transition-all duration-200 shadow-2xl"
+      className="fixed z-[100] pointer-events-none transition-all duration-300"
       style={{ 
-        top: Math.max(80, position.y - 140), 
-        left: Math.min(window.innerWidth - toolbarWidth - 20, Math.max(20, position.x - (toolbarWidth / 2))) 
+        top: Math.max(10, position.y - (isMobile ? 80 : 140)), 
+        left: Math.min(window.innerWidth - (isMobile ? 280 : toolbarWidth) - 20, Math.max(20, position.x - (isMobile ? 140 : (toolbarWidth / 2)))) 
       }}
     >
       <motion.div 
@@ -50,71 +50,85 @@ const SelectionToolbar = ({ position, selectedText, onAction, onClose }) => {
         initial={{ opacity: 0, scale: 0.9, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 10 }}
-        className="pointer-events-auto bg-[#ede9fe]/95 backdrop-blur-xl rounded-2xl flex flex-col overflow-hidden border border-black/5 shadow-2xl"
-        style={{ width: toolbarWidth }}
+        className={clsx(
+          "pointer-events-auto shadow-2xl flex flex-col overflow-hidden border border-white/20",
+          isMobile 
+            ? "bg-bookvault-primary text-white rounded-full px-2 animate-bounce-subtle" 
+            : "bg-[#ede9fe]/95 backdrop-blur-xl rounded-2xl"
+        )}
+        style={{ width: isMobile ? 'auto' : toolbarWidth }}
       >
-        {/* Top Row: Formatting Styles */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-black/5">
-          <StyleBtn 
-            label="T" 
-            active={activeStyle === 'highlight'} 
-            onClick={() => handleApplyStyle('highlight')} 
-            className="bg-pink-300/40 px-1 font-serif text-lg text-black/60"
-          />
-          <StyleBtn 
-            label="T" 
-            active={activeStyle === 'underline'} 
-            onClick={() => handleApplyStyle('underline')} 
-            className="underline font-serif text-lg text-black/60"
-          />
-          <StyleBtn 
-            label="T" 
-            active={activeStyle === 'strike'} 
-            onClick={() => handleApplyStyle('strike')} 
-            className="line-through font-serif text-lg text-black/60"
-          />
-          <StyleBtn 
-            label="T" 
-            active={activeStyle === 'wavy'} 
-            onClick={() => handleApplyStyle('wavy')} 
-            className="underline decoration-wavy font-serif text-lg text-black/60"
-          />
-          <button className="text-black/40 hover:text-black/70 transition-colors">
-            <Share2 size={18} />
-          </button>
-        </div>
-
-        {/* Middle Row: Colors */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-black/5">
-          {colors.map((c, i) => (
+        {!isMobile ? (
+          <>
+            {/* Desktop View: Multi-row */}
+            <div className="flex items-center justify-between px-6 py-3 border-b border-black/5">
+              <StyleBtn label="T" active={activeStyle === 'highlight'} onClick={() => handleApplyStyle('highlight')} className="bg-pink-300/40 px-1 font-serif text-lg text-black/60" />
+              <StyleBtn label="T" active={activeStyle === 'underline'} onClick={() => handleApplyStyle('underline')} className="underline font-serif text-lg text-black/60" />
+              <StyleBtn label="T" active={activeStyle === 'strike'} onClick={() => handleApplyStyle('strike')} className="line-through font-serif text-lg text-black/60" />
+              <StyleBtn label="T" active={activeStyle === 'wavy'} onClick={() => handleApplyStyle('wavy')} className="underline decoration-wavy font-serif text-lg text-black/60" />
+              <button className="text-black/40 hover:text-black/70 transition-colors">
+                <Share2 size={18} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between px-6 py-3 border-b border-black/5">
+              {colors.map((c, i) => (
+                <button key={i} onClick={() => handleApplyColor(c.apply)} className="w-6 h-3 rounded-full hover:scale-110 transition-transform shadow-sm" style={{ backgroundColor: c.button }} />
+              ))}
+              <button onClick={() => setShowColorPicker(true)} className="w-6 h-6 rounded-full bg-white/50 flex items-center justify-center hover:bg-white transition-colors">
+                <Palette size={14} className="text-black/60" />
+              </button>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 bg-[#e6e2fc]">
+              <PenTool size={20} className="text-black/40 opacity-70" />
+              <TextActionBtn label="Copy" onClick={handleCopy} />
+              <TextActionBtn label={activeStyle.charAt(0).toUpperCase() + activeStyle.slice(1)} onClick={() => handleApplyColor(activeColor)} />
+              <TextActionBtn label="Note" onClick={() => { onAction('note'); onClose(); }} />
+              <TextActionBtn label="Dict." onClick={() => { onAction('dictionary'); onClose(); }} />
+              <TextActionBtn label="More" onClick={() => { onAction('more'); onClose(); }} />
+            </div>
+          </>
+        ) : (
+          /* Mobile View: Single Row Sleek Bar */
+          <div className="flex items-center gap-1 py-1 pr-2">
             <button 
-              key={i}
-              onClick={() => handleApplyColor(c.apply)}
-              className="w-6 h-3 rounded-full hover:scale-110 transition-transform shadow-sm"
-              style={{ backgroundColor: c.button }}
-            />
-          ))}
-          <button 
-            onClick={() => setShowColorPicker(true)}
-            className="w-6 h-6 rounded-full bg-white/50 flex items-center justify-center hover:bg-white transition-colors"
-          >
-            <Palette size={14} className="text-black/60" />
-          </button>
-        </div>
-
-        {/* Bottom Row: Actions */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#e6e2fc]">
-          <PenTool size={20} className="text-black/40 opacity-70" />
-          <TextActionBtn label="Copy" onClick={handleCopy} />
-          <TextActionBtn 
-            label={activeStyle.charAt(0).toUpperCase() + activeStyle.slice(1)} 
-            onClick={() => handleApplyColor(activeColor)} 
-          />
-          <TextActionBtn label="Note" onClick={() => { onAction('note'); onClose(); }} />
-          <TextActionBtn label="Dict." onClick={() => { onAction('dictionary'); onClose(); }} />
-          <TextActionBtn label="More" onClick={() => { onAction('more'); onClose(); }} />
-        </div>
+               onClick={() => handleApplyColor(colors[0].apply)}
+               className="p-3 hover:bg-white/10 rounded-full transition-colors flex flex-col items-center gap-1"
+            >
+               <Highlighter size={20} />
+               <span className="text-[9px] font-black uppercase tracking-widest">Highlight</span>
+            </button>
+            <div className="w-px h-8 bg-white/10 mx-1" />
+            <button 
+               onClick={() => { onAction('note'); onClose(); }}
+               className="p-3 hover:bg-white/10 rounded-full transition-colors flex flex-col items-center gap-1"
+            >
+               <MessageSquarePlus size={20} />
+               <span className="text-[9px] font-black uppercase tracking-widest">Note</span>
+            </button>
+            <button 
+               onClick={handleCopy}
+               className="p-3 hover:bg-white/10 rounded-full transition-colors flex flex-col items-center gap-1"
+            >
+               <Clipboard size={20} />
+               <span className="text-[9px] font-black uppercase tracking-widest">Copy</span>
+            </button>
+            <button 
+               onClick={() => {
+                  if (navigator.share) navigator.share({ text: selectedText });
+                  onClose();
+               }}
+               className="p-3 hover:bg-white/10 rounded-full transition-colors flex flex-col items-center gap-1"
+            >
+               <Share2 size={20} />
+               <span className="text-[9px] font-black uppercase tracking-widest">Share</span>
+            </button>
+          </div>
+        )}
       </motion.div>
+      {/* Tooltip Arrow for mobile */}
+      {isMobile && (
+        <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-bookvault-primary mx-auto" />
+      )}
 
       {showColorPicker && (
         <AdvancedColorPicker 

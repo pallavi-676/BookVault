@@ -22,7 +22,7 @@ const BottomNav = () => {
   ]
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-zinc-900 border-t border-outline-variant/10 z-[60] flex items-center justify-around px-2 pb-safe">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 h-14 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-outline-variant/10 z-[60] flex items-center justify-around px-2 pb-safe">
       {navItems.map((item) => {
         const isActive = location.pathname === item.path || (item.id === 'profile' && location.pathname.startsWith('/@'));
         
@@ -41,7 +41,7 @@ const BottomNav = () => {
             )}>
                 <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">{item.label}</span>
+            <span className="text-[9px] font-bold uppercase tracking-[0.15em]">{item.label}</span>
           </button>
         )
       })}

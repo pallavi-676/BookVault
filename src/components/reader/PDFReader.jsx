@@ -11,6 +11,8 @@ import 'react-pdf/dist/Page/TextLayer.css'
 // Use a reliable worker URL
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
+import { Highlighter, Share2, Clipboard, MessageSquarePlus } from 'lucide-react'
+
 const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad, onTOCLoad, theme, fontSize }, ref) => {
   const [pdfInstance, setPdfInstance] = useState(null)
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
@@ -78,6 +80,81 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   
   // Active deletion popover state
   const [activeHighlight, setActiveHighlight] = useState(null)
+  const [mobileSelection, setMobileSelection] = useState(null) // { rect, text, range }
+  const [isSelecting, setIsSelecting] = useState(false)
+  
+  // Selection handling for mobile
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const handleSelectionChange = () => {
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || selection.rangeCount === 0) {
+        if (!isSelecting) setMobileSelection(null);
+        return;
+      }
+      
+      const range = selection.getRangeAt(0);
+      const rects = range.getClientRects();
+      if (rects.length === 0) return;
+      
+      // Get the bounding rect for the toolbar positioning
+      const lastRect = rects[rects.length - 1];
+      const containerRect = document.querySelector('.reader-page-container')?.getBoundingClientRect();
+      
+      if (!containerRect) return;
+      
+      setMobileSelection({
+        text: selection.toString(),
+        rect: {
+          top: lastRect.top - containerRect.top,
+          left: lastRect.left - containerRect.left + (lastRect.width / 2),
+          width: lastRect.width
+        },
+        range: range
+      });
+    };
+
+    document.addEventListener('selectionchange', handleSelectionChange);
+    return () => document.removeEventListener('selectionchange', handleSelectionChange);
+  }, [isMobile, isSelecting]);
+
+  const handleCustomHighlight = (color, style = 'highlight') => {
+    if (!mobileSelection) return;
+    
+    // Logic to add highlight (similar to desktop but using mobileSelection.range)
+    // For now, we reuse the existing highlight creation logic if possible
+    // Note: This requires the parent component to provide the addHighlight function
+    // or we use the store directly if accessible.
+    
+    // Dismiss selection
+    window.getSelection().removeAllRanges();
+    setMobileSelection(null);
+    setIsSelecting(false);
+  };
+
+  const handleTouchStart = (e) => {
+    if (!isMobile) return;
+    const touch = e.touches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    
+    // Only start selection if touching text layer
+    if (target?.closest('.react-pdf__Page__textContent')) {
+      const containerRect = document.querySelector('.reader-page-container').getBoundingClientRect();
+      const startPoint = { 
+        x: touch.clientX - containerRect.left, 
+        y: touch.clientY - containerRect.top 
+      };
+      
+      // Long press detection
+      const timer = setTimeout(() => {
+        setIsSelecting(true);
+        // Start virtual selection...
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  };
 
   const bookAnnotations = annotations?.[bookId] || []
   const pageAnnotations = bookAnnotations.filter(
@@ -150,6 +227,22 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     return { backgroundColor: color, mixBlendMode: 'multiply' } // native multiply blend for true highlight effect
   }
 
+  // Virtual Selection Handles for Mobile
+  const SelectionHandle = ({ type, position }) => (
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      className="absolute w-4 h-4 bg-bookvault-primary rounded-full z-[80] shadow-lg flex items-center justify-center cursor-pointer pointer-events-auto"
+      style={{ 
+        left: `${position.left}%`, 
+        top: type === 'start' ? `${position.top}%` : `${position.top + position.height}%`,
+        transform: `translate(-50%, ${type === 'start' ? '-100%' : '0%'})`
+      }}
+    >
+      <div className="w-1.5 h-1.5 bg-white rounded-full" />
+    </motion.div>
+  );
+
   const isMobile = containerWidth < 768;
 
   return (
@@ -184,13 +277,14 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           animate={{ opacity: pageLoading ? 0 : 1 }}
           transition={{ duration: 0.3 }}
           className={clsx(
-            "relative bg-white shadow-premium transition-all duration-300",
-            isMobile ? "" : "rounded-sm"
+            "relative bg-white shadow-premium transition-all duration-300 reader-page-container",
+            isMobile ? "mobile-reader-content" : "rounded-sm"
           )} 
           style={{ 
-            touchAction: 'pan-y pinch-zoom',
+            touchAction: isSelecting ? 'none' : 'pan-y pinch-zoom',
             width: isMobile ? '100vw' : 'fit-content'
           }}
+          onContextMenu={(e) => isMobile && e.preventDefault()}
         >
           <Page 
             pageNumber={currentPage} 
@@ -200,6 +294,22 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
             renderTextLayer={true}
             onRenderError={(err) => console.error('Page Render Error:', err)}
           />
+
+          {/* Virtual Selection Visuals */}
+          {isMobile && mobileSelection && (
+            <div className="absolute inset-0 pointer-events-none z-[75]">
+              {/* Highlight Overlay */}
+              <div 
+                className="absolute bg-bookvault-primary/20 mix-blend-multiply"
+                style={{
+                   top: `${mobileSelection.rect.top}px`,
+                   left: `${mobileSelection.rect.left - (mobileSelection.rect.width / 2)}px`,
+                   width: `${mobileSelection.rect.width}px`,
+                   height: `24px` // Approx line height
+                }}
+              />
+            </div>
+          )}
           
           {/* Permanent Annotation Overlay coordinate engine */}
           <div className="absolute inset-0 pointer-events-none z-10">
@@ -250,10 +360,64 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
               </div>
             ))}
           </div>
+
+          {/* Custom Mobile Selection Toolbar */}
+          <AnimatePresence>
+            {isMobile && mobileSelection && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, x: '-50%' }}
+                animate={{ opacity: 1, y: 0, x: '-50%' }}
+                exit={{ opacity: 0, y: 10, x: '-50%' }}
+                className="fixed md:absolute z-[100] flex flex-col items-center"
+                style={{ 
+                  left: mobileSelection.rect.left, 
+                  top: Math.max(40, mobileSelection.rect.top - 60)
+                }}
+              >
+                <div className="bg-bookvault-primary text-white p-1 rounded-2xl shadow-premium flex items-center gap-1 border border-white/20">
+                  <SelectionButton 
+                    icon={<Highlighter size={16} />} 
+                    onClick={() => handleCustomHighlight('#FFD700')} 
+                  />
+                  <SelectionButton 
+                    icon={<MessageSquarePlus size={16} />} 
+                    onClick={() => {/* Note logic */}} 
+                  />
+                  <SelectionButton 
+                    icon={<Clipboard size={16} />} 
+                    onClick={() => {
+                      navigator.clipboard.writeText(mobileSelection.text);
+                      setMobileSelection(null);
+                    }} 
+                  />
+                  <SelectionButton 
+                    icon={<Share2 size={16} />} 
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({ text: mobileSelection.text });
+                      }
+                      setMobileSelection(null);
+                    }} 
+                  />
+                </div>
+                {/* Arrow */}
+                <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-bookvault-primary" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </Document>
     </div>
   )
 })
+
+const SelectionButton = ({ icon, onClick }) => (
+  <button 
+    onClick={(e) => { e.stopPropagation(); onClick(); }}
+    className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+  >
+    {icon}
+  </button>
+);
 
 export default PDFReader

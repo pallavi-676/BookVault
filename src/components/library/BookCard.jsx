@@ -20,7 +20,7 @@ const BookCard = ({ book, progress = 0, onClick }) => {
     <motion.div 
       whileHover={{ y: -8 }}
       onClick={onClick}
-      className="bg-bookvault-surface-lowest rounded-book p-4 shadow-premium cursor-pointer group flex flex-col h-full relative"
+      className="bg-bookvault-surface-lowest rounded-2xl md:rounded-book p-2 sm:p-4 shadow-premium cursor-pointer group flex flex-col h-full relative"
     >
       {/* Action Menu Trigger */}
       <div className="absolute top-2 right-2 z-20 flex gap-1">
@@ -48,7 +48,7 @@ const BookCard = ({ book, progress = 0, onClick }) => {
         )}
       </div>
 
-      <div className="relative aspect-[3/4] rounded-lg overflow-hidden mb-4 bg-bookvault-surface-low">
+      <div className="relative aspect-[3/4] rounded-xl overflow-hidden mb-2 md:mb-4 bg-bookvault-surface-low">
 
         {book.coverUrl ? (
           <img 
@@ -77,12 +77,12 @@ const BookCard = ({ book, progress = 0, onClick }) => {
         </div>
       </div>
 
-      <div className="flex flex-col flex-1">
-        <h3 className="text-sm font-serif font-bold text-bookvault-primary line-clamp-2 mb-0.5 group-hover:text-bookvault-secondary transition-colors leading-tight">
+      <div className="flex flex-col flex-1 px-1 md:px-0">
+        <h3 className="text-[11px] md:text-sm font-serif font-bold text-bookvault-primary line-clamp-2 mb-0.5 group-hover:text-bookvault-secondary transition-colors leading-tight">
           {book.title}
         </h3>
-        <p className="text-[10px] font-sans text-on-surface-variant font-medium flex items-center gap-1.5 opacity-70">
-          <span>{book.author || 'Unknown Author'}</span>
+        <p className="text-[9px] md:text-[10px] font-sans text-on-surface-variant font-medium flex items-center gap-1.5 opacity-70">
+          <span className="truncate max-w-[100px]">{book.author || 'Unknown Author'}</span>
           <span className="w-1 h-1 rounded-full bg-outline-variant/40" />
           <span className="uppercase tracking-widest text-[9px]">{book.type || 'Doc'}</span>
         </p>

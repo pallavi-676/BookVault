@@ -153,10 +153,10 @@ const Dashboard = () => {
         
         <main className="flex-1 p-4 md:p-8 lg:pl-64 transition-all duration-300">
           {/* Header Section */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
-            <header className="space-y-1 md:space-y-2">
-              <h1 className="text-2xl md:text-4xl font-serif font-bold text-bookvault-primary tracking-tight">Your Digital Library</h1>
-              <p className="text-on-surface-variant/60 text-xs md:text-sm font-medium italic">Discover treasures you've archived.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 mb-6 md:mb-12">
+            <header className="space-y-0.5 md:space-y-2">
+              <h1 className="text-xl md:text-4xl font-serif font-bold text-bookvault-primary tracking-tight">Your Digital Library</h1>
+              <p className="text-on-surface-variant/60 text-[10px] md:text-sm font-medium italic">Discover treasures you've archived.</p>
             </header>
 
             {/* Category Filter - Scrollable on Mobile */}
@@ -182,7 +182,7 @@ const Dashboard = () => {
             {(allDisplayItems || []).length > 0 ? (
               <motion.div 
                 layout
-                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-8"
+                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-8"
               >
                 {(allDisplayItems || []).map((item) => (
                   <BookCard 
