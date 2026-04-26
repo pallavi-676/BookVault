@@ -16,8 +16,8 @@ import { Highlighter, Share2, ClipboardCopy, MessageSquarePlus } from 'lucide-re
 const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad, onTOCLoad, theme, fontSize }, ref) => {
   const [pdfInstance, setPdfInstance] = useState(null)
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
-  const [scale, setScale] = useState(1.0)
   const isMobile = containerWidth < 768;
+  const [scale, setScale] = useState(isMobile ? 1.25 : 1.0)
 
   // Track window resize to ensure fluid mobile stretching
   useEffect(() => {
@@ -234,21 +234,27 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   return (
     <div 
       className={clsx(
-        "flex flex-col items-center w-full h-full overflow-auto relative group transition-colors duration-300",
+        "flex flex-col items-center w-full h-full overflow-x-hidden overflow-y-auto relative group transition-colors duration-300",
         isMobile ? `${colors.bg} py-0 px-0` : "py-10 bg-bookvault-surface"
       )}
       onClick={() => setActiveHighlight(null)}
       onTouchStart={handleTouchStart}
       onTouchEnd={() => {
-        // Force a selection check on mobile touch end
         setTimeout(() => {
           const selection = window.getSelection();
-          if (selection && !selection.isCollapsed) {
-             // selectionchange observer will handle the state update
-          }
+          if (selection && !selection.isCollapsed) {}
         }, 100);
       }}
     >
+      <style>{`
+        .react-pdf__Page__canvas, .react-pdf__Page__textContent {
+          mix-blend-mode: ${theme === 'sepia' ? 'multiply' : 'normal'};
+          filter: ${theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'};
+        }
+        .react-pdf__Page {
+           background-color: transparent !important;
+        }
+      `}</style>
       <Document
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
