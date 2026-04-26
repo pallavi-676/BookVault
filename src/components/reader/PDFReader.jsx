@@ -17,7 +17,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
   const [pdfInstance, setPdfInstance] = useState(null)
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const isMobile = containerWidth < 768;
-  const [scale, setScale] = useState(isMobile ? 1.4 : 1.0)
+  const [scale, setScale] = useState(isMobile ? 1.57 : 1.0)
 
   // Track window resize to ensure fluid mobile stretching
   useEffect(() => {
@@ -183,7 +183,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
         }
       `}</style>
       <Document
-        className="my-auto flex flex-col items-center w-full"
+        className="w-full"
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={onDocumentLoadError}
@@ -208,13 +208,20 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
           className={clsx(
-            "relative transition-all duration-300 reader-page-container flex-shrink-0 overflow-hidden",
-            isMobile ? "mobile-reader-content" : "rounded-sm shadow-premium bg-white"
+            "transition-all duration-300 reader-page-container flex-shrink-0 overflow-hidden",
+            isMobile ? "mobile-reader-content" : "rounded-sm shadow-premium bg-white relative"
           )} 
           style={{ 
             width: 'fit-content',
-            margin: '0 auto',
-            backgroundColor: isMobile ? 'transparent' : 'white'
+            backgroundColor: isMobile ? 'transparent' : 'white',
+            ...(isMobile ? {
+              position: 'relative',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              filter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'
+            } : {
+              margin: '0 auto',
+            })
           }}
           onContextMenu={(e) => isMobile && e.preventDefault()}
         >
@@ -226,14 +233,6 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
             renderTextLayer={true}
             onRenderError={(err) => console.error('Page Render Error:', err)}
           />
-
-          {/* High-Performance Theme Tinting Overlays */}
-          {theme === 'sepia' && (
-            <div className="absolute inset-0 pointer-events-none z-20 bg-[#EAD7D1] mix-blend-multiply" />
-          )}
-          {theme === 'dark' && (
-            <div className="absolute inset-0 pointer-events-none z-20 bg-[#d1d1d1] mix-blend-difference" />
-          )}
 
 
           
