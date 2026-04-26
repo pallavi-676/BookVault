@@ -3,6 +3,8 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import { Trash2 } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 import { useParams } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { clsx } from 'clsx'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
 
