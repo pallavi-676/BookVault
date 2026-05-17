@@ -75,6 +75,28 @@ const Profile = () => {
   const { checkUsernameAvailability } = useStore()
   const role = userProfile?.role || 'reader'
 
+  // Initial database values for robust dirty checking
+  const initialFullName = userProfile?.fullName || user?.user_metadata?.full_name || ''
+  const initialUsername = userProfile?.username || ''
+  const initialBio = userProfile?.bio || ''
+  const initialGenres = userProfile?.genres || []
+  const initialInstagram = userProfile?.socialLinks?.instagram || ''
+  const initialTwitter = userProfile?.socialLinks?.twitter || ''
+  const initialWebsite = userProfile?.socialLinks?.website || ''
+  const initialAvatarUrl = userProfile?.avatarUrl || null
+
+  const isDirty = 
+    fullName !== initialFullName ||
+    username !== initialUsername ||
+    bio !== initialBio ||
+    genres.length !== initialGenres.length ||
+    genres.some((g, i) => g !== initialGenres[i]) ||
+    instagram !== initialInstagram ||
+    twitter !== initialTwitter ||
+    website !== initialWebsite ||
+    avatarUrl !== initialAvatarUrl
+
+
   // Validation Regex: 3-20 chars, lowercase, numbers, underscore
   const validateUsername = (val) => /^[a-z0-9_]{3,20}$/.test(val)
 
@@ -725,6 +747,54 @@ const Profile = () => {
           </AnimatePresence>
         </motion.div>
       </main>
+
+      {/* Floating Unsaved Changes Notification Bar */}
+      <AnimatePresence>
+        {isDirty && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="fixed bottom-16 lg:bottom-6 left-4 right-4 md:left-auto md:right-6 md:w-96 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-bookvault-primary/20 rounded-2xl p-4 shadow-xl z-50 flex items-center justify-between gap-4"
+          >
+            <div className="flex flex-col text-left">
+              <span className="text-xs font-bold text-bookvault-primary uppercase tracking-wider">Unsaved Changes</span>
+              <span className="text-[10px] text-on-surface-variant font-medium">Be sure to save your profile changes.</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                   setFullName(initialFullName);
+                   setUsername(initialUsername);
+                   setBio(initialBio);
+                   setGenres(initialGenres);
+                   setInstagram(initialInstagram);
+                   setTwitter(initialTwitter);
+                   setWebsite(initialWebsite);
+                   setAvatarUrl(initialAvatarUrl);
+                }}
+                className="px-3 py-1.5 hover:bg-bookvault-surface-low text-on-surface-variant font-bold text-xs rounded-full transition-all"
+              >
+                Reset
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="px-4 py-1.5 bg-bookvault-primary text-white hover:bg-bookvault-primary-container font-bold text-xs rounded-full transition-all shadow-premium flex items-center gap-1.5 disabled:opacity-60"
+              >
+                {saving ? (
+                  <>
+                    <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin" />
+                    Saving...
+                  </>
+                ) : 'Save'}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <BottomNav />
     </div>
   )
