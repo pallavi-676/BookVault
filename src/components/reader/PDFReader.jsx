@@ -173,7 +173,7 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
     <div 
       className={clsx(
         "flex flex-col items-center w-full h-full overflow-y-auto overflow-x-hidden relative group transition-colors duration-300",
-        isMobile ? `${colors.bg} px-0` : "py-10 bg-bookvault-surface"
+        isMobile ? `${colors.bg} px-0` : `py-10 ${colors.bg}`
       )}
       onClick={() => setActiveHighlight(null)}
     >
@@ -213,13 +213,13 @@ const PDFReader = forwardRef(({ file, currentPage, onPageChange, onDocumentLoad,
           )} 
           style={{ 
             width: 'fit-content',
-            backgroundColor: isMobile ? 'transparent' : 'white',
+            backgroundColor: 'white',
+            WebkitFilter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none',
+            filter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none',
             ...(isMobile ? {
               position: 'relative',
               left: '50%',
               transform: 'translateX(-50%)',
-              WebkitFilter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none',
-              filter: theme === 'sepia' ? 'sepia(1) hue-rotate(-15deg) contrast(0.9) brightness(0.95)' : theme === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'
             } : {
               margin: '0 auto',
             })
