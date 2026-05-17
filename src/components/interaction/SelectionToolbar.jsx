@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Share2, PenTool, Palette, Highlighter, MessageSquarePlus, ClipboardCopy } from 'lucide-react'
+import { clsx } from 'clsx'
 import AdvancedColorPicker from './AdvancedColorPicker'
 
 const SelectionToolbar = ({ position, selectedText, onAction, onClose }) => {
